@@ -1,0 +1,10 @@
+# Environment variables
+.env
+.env.*
+
+# Secrets
+*.key
+*.pem
+
+# Logs
+logs/

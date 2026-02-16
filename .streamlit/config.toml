@@ -1,0 +1,37 @@
+# ----- .streamlit/config.toml -----
+# ScholarSync Streamlit configuration
+#
+# This file defines the DEFAULT theme (Light mode).
+# Runtime Light/Dark switching is handled inside app.py using custom CSS.
+# Do NOT rely on this file for dynamic theme switching.
+
+[theme]
+
+# Base theme (must be "light" since runtime switching is handled in code)
+base = "light"
+
+# Primary brand color (used for buttons, highlights)
+primaryColor = "#4F46E5"
+
+# Main app background color
+backgroundColor = "#F7F7FB"
+
+# Sidebar + card background color
+secondaryBackgroundColor = "#FFFFFF"
+
+# Default text color
+textColor = "#111827"
+
+# Font family
+font = "sans serif"
+
+
+# Optional server settings (safe defaults)
+[server]
+headless = true
+runOnSave = true
+
+
+# Optional browser settings
+[browser]
+gatherUsageStats = false
