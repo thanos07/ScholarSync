@@ -9,12 +9,18 @@
 # - Ingestion lock
 # - RAG lazy initialization (only on ask)
 # Force a modern SQLite (Streamlit Cloud's system sqlite3 is sometimes older than Chroma needs).
+from __future__ import annotations
+
+# Force a modern SQLite (Streamlit Cloud's system sqlite3 is sometimes older than Chroma needs).
+# Must run before any import that pulls in chromadb / langchain_chroma.
 try:
     __import__("pysqlite3")
     import sys
     sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")
 except ImportError:
     pass
+
+# ... the rest of your existing imports (streamlit, scholarsync.*, etc.) go below
 from __future__ import annotations
 
 import shutil
