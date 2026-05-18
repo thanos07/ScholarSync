@@ -8,7 +8,7 @@
 # - Instant theme toggle
 # - Ingestion lock
 # - RAG lazy initialization (only on ask)
-# Force a modern SQLite (Streamlit Cloud's system sqlite3 is sometimes older than Chroma needs).
+
 from __future__ import annotations
 
 # Force a modern SQLite (Streamlit Cloud's system sqlite3 is sometimes older than Chroma needs).
@@ -19,9 +19,6 @@ try:
     sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")
 except ImportError:
     pass
-
-# ... the rest of your existing imports (streamlit, scholarsync.*, etc.) go below
-from __future__ import annotations
 
 import shutil
 import uuid
@@ -166,7 +163,7 @@ def _build_sidebar(settings: Settings) -> Dict[str, Any]:
         help="These PDFs will be indexed for Q&A.",
     )
 
-    #  Default ON: only current upload should be used
+    # Default ON: only current upload should be used
     isolate_mode = st.sidebar.toggle(
         "Use only current upload (recommended)",
         value=True,
@@ -184,9 +181,9 @@ def _build_sidebar(settings: Settings) -> Dict[str, Any]:
     refresh_clicked = c1.button("Refresh", use_container_width=True)
 
     build_clicked = c2.button(
-    "Build",
-    use_container_width=True,
-    disabled=st.session_state["ingesting"]
+        "Build",
+        use_container_width=True,
+        disabled=st.session_state["ingesting"],
     )
 
     if refresh_clicked:
@@ -206,7 +203,7 @@ def _build_sidebar(settings: Settings) -> Dict[str, Any]:
         else:
             st.session_state["ingesting"] = True
             try:
-                #  isolate_mode guarantees: no old PDFs + no old chunks
+                # isolate_mode guarantees: no old PDFs + no old chunks
                 effective_reset = True if isolate_mode else bool(reset_index)
 
                 if isolate_mode:
@@ -218,7 +215,7 @@ def _build_sidebar(settings: Settings) -> Dict[str, Any]:
                     st.sidebar.error("No PDFs saved.")
                 else:
                     with st.sidebar.status("Indexing PDFs…", expanded=True):
-                        # ✅ ingest ONLY UI upload folder (not the whole data/pdfs)
+                        # ingest ONLY UI upload folder (not the whole data/pdfs)
                         run_ingest(upload_dir, reset=effective_reset)
 
                     # refresh status once (manual)
