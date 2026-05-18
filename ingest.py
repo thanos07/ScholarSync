@@ -98,6 +98,18 @@ def ingest(pdf_dir: Path, reset: bool) -> int:
     if reset and persist_dir.exists():
         logger.info("Reset requested: removing existing Chroma directory: %s", str(persist_dir))
         shutil.rmtree(persist_dir, ignore_errors=True)
+        # Critical: clear ChromaDB's in-process client cache.
+        # Without this, the next Chroma(...) call returns a stale client whose
+        # SQLite handle points at the directory we just deleted, causing
+        # "sqlite3.OperationalError: unable to open database file".
+        try:
+            from chromadb.api.client import SharedSystemClient
+            SharedSystemClient.clear_system_cache()
+        except Exception:
+            logger.debug("Could not clear Chroma SharedSystemClient cache (non-fatal).")
+
+    # Chroma needs the persist dir to exist before it can create the SQLite file.
+    persist_dir.mkdir(parents=True, exist_ok=True)
 
     # Find PDFs
     pdfs = _find_pdfs(pdf_dir)
