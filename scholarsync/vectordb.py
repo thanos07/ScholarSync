@@ -88,6 +88,14 @@ def get_vectorstore(settings: Settings, embeddings: Any):
             settings.chroma_collection,
         )
 
+        from pathlib import Path
+        Path(settings.chroma_persist_dir).mkdir(parents=True, exist_ok=True)
+        # Clear stale Chroma client cache (no-op if not present).
+        try:
+            from chromadb.api.client import SharedSystemClient
+            SharedSystemClient.clear_system_cache()
+        except Exception:
+            pass
         vectorstore = Chroma(
             persist_directory=settings.chroma_persist_dir,
             collection_name=settings.chroma_collection,
