@@ -8,7 +8,13 @@
 # - Instant theme toggle
 # - Ingestion lock
 # - RAG lazy initialization (only on ask)
-
+# Force a modern SQLite (Streamlit Cloud's system sqlite3 is sometimes older than Chroma needs).
+try:
+    __import__("pysqlite3")
+    import sys
+    sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")
+except ImportError:
+    pass
 from __future__ import annotations
 
 import shutil
