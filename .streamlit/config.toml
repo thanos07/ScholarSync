@@ -29,7 +29,8 @@ font = "sans serif"
 # Optional server settings (safe defaults)
 [server]
 headless = true
-runOnSave = true
+runOnSave = false
+fileWatcherType = "none"
 
 
 # Optional browser settings
