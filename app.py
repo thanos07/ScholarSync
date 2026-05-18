@@ -1,7 +1,5 @@
 # ----- app.py -----
 # ScholarSync Streamlit UI (Upload → Build → Ask)
-#
-# ✅ FIX INCLUDED:
 # - "Use only current upload" mode (default ON):
 #     * Clears old UI-uploaded PDFs
 #     * Resets Chroma index
@@ -156,7 +154,7 @@ def _build_sidebar(settings: Settings) -> Dict[str, Any]:
         help="These PDFs will be indexed for Q&A.",
     )
 
-    # ✅ Default ON: only current upload should be used
+    #  Default ON: only current upload should be used
     isolate_mode = st.sidebar.toggle(
         "Use only current upload (recommended)",
         value=True,
@@ -171,8 +169,13 @@ def _build_sidebar(settings: Settings) -> Dict[str, Any]:
     )
 
     c1, c2 = st.sidebar.columns(2)
-    refresh_clicked = c1.button("Refresh", width="stretch")
-    build_clicked = c2.button("Build", width="stretch", disabled=st.session_state["ingesting"])
+    refresh_clicked = c1.button("Refresh", use_container_width=True)
+
+    build_clicked = c2.button(
+    "Build",
+    use_container_width=True,
+    disabled=st.session_state["ingesting"]
+    )
 
     if refresh_clicked:
         _refresh_index_status(settings)
@@ -191,7 +194,7 @@ def _build_sidebar(settings: Settings) -> Dict[str, Any]:
         else:
             st.session_state["ingesting"] = True
             try:
-                # ✅ isolate_mode guarantees: no old PDFs + no old chunks
+                #  isolate_mode guarantees: no old PDFs + no old chunks
                 effective_reset = True if isolate_mode else bool(reset_index)
 
                 if isolate_mode:
@@ -236,7 +239,7 @@ def _build_sidebar(settings: Settings) -> Dict[str, Any]:
     st.sidebar.code(settings.groq_model, language="text")
 
     st.sidebar.divider()
-    if st.sidebar.button("🧹 Clear chat", width="stretch"):
+    if st.sidebar.button(" Clear chat", use_container_width=True):
         st.session_state["messages"] = []
         st.toast("Chat cleared.", icon="🧹")
 
